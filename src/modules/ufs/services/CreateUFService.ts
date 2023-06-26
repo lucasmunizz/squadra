@@ -1,5 +1,5 @@
 import AppError from '../../../shared/errors/AppError';
-import UF from '../infra/typeorm/entities/UF';
+
 import { ICreateUF } from '../domain/models/ICreateUF';
 import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';

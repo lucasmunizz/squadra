@@ -1,4 +1,3 @@
-import UF from '../infra/typeorm/entities/UF';
 import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';

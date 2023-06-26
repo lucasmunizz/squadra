@@ -1,4 +1,4 @@
-import { EntityRepository, Repository, getRepository } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 import UF from '../entities/UF';
 import { IUFRepository } from '../../../domain/repositories/IUFRepository';
 import { ICreateUF } from '../../../domain/models/ICreateUF';

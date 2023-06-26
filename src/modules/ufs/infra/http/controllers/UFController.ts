@@ -6,7 +6,6 @@ import ListUFService from '../../../services/ListUFService';
 import ShowUFService from '../../../services/ShowUFService';
 import UpdateUFService from '../../../services/UpdateUFService';
 import DeleteUFService from '../../../services/DeleteUFService';
-import AppError from '../../../../../shared/errors/AppError';
 
 export default class UFController {
   public async index(request: Request, response: Response): Promise<Response> {
