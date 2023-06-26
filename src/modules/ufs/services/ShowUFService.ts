@@ -10,8 +10,17 @@ export default class ShowUFService {
     private ufsRepository: IUFRepository,
   ) {}
 
-  public async execute(codigoUF: number): Promise<UF> {
+  public async execute(codigoUF: number, status: number): Promise<UF> {
     const uf = await this.ufsRepository.findByCode(codigoUF);
+
+    console.log(status);
+
+    if (status) {
+      const queryBuilder = this.ufsRepository
+        .createQueryBuilder('uf')
+        .where('uf.status = :status', { status });
+      const st = await queryBuilder.getMany();
+    }
 
     if (!uf) {
       throw new AppError('UF não encontrada');

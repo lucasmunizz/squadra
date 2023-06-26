@@ -1,3 +1,4 @@
+import { QueryRunner, SelectQueryBuilder } from 'typeorm';
 import UF from '../../infra/typeorm/entities/UF';
 import { ICreateUF } from '../models/ICreateUF';
 import { IUF } from '../models/IUF';
@@ -11,4 +12,8 @@ export interface IUFRepository {
   create(data: ICreateUF): Promise<UF>;
   save(uf: IUF): Promise<UF>;
   remove(uf: IUF): Promise<void>;
+  createQueryBuilder(
+    alias?: string,
+    queryRunner?: QueryRunner,
+  ): SelectQueryBuilder<UF>;
 }

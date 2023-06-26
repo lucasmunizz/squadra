@@ -4,6 +4,7 @@ import { ICreateUF } from '../domain/models/ICreateUF';
 import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
 import ValidateUFService from './ValidateUFService';
+import UF from '../infra/typeorm/entities/UF';
 
 @injectable()
 export default class CreateUFService {
@@ -12,7 +13,7 @@ export default class CreateUFService {
     private ufsRepository: IUFRepository,
   ) {}
 
-  public async execute({ sigla, nome, status }: ICreateUF): Promise<void> {
+  public async execute({ sigla, nome, status }: ICreateUF): Promise<UF[]> {
     const validator = new ValidateUFService();
 
     validator.validate({ sigla, nome, status });
@@ -28,5 +29,9 @@ export default class CreateUFService {
       nome,
       status,
     });
+
+    const ufs = await this.ufsRepository.find();
+
+    return ufs;
   }
 }

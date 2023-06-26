@@ -1,4 +1,9 @@
-import { Repository, getRepository } from 'typeorm';
+import {
+  QueryRunner,
+  Repository,
+  SelectQueryBuilder,
+  getRepository,
+} from 'typeorm';
 import UF from '../entities/UF';
 import { IUFRepository } from '../../../domain/repositories/IUFRepository';
 import { ICreateUF } from '../../../domain/models/ICreateUF';
@@ -72,6 +77,14 @@ class UFRepository implements IUFRepository {
 
   public async remove(uf: UF): Promise<void> {
     await this.ormRepository.remove(uf);
+  }
+
+  public createQueryBuilder(
+    alias?: string,
+    queryRunner?: QueryRunner,
+  ): SelectQueryBuilder<UF> {
+    const queryBuilder = this.ormRepository.createQueryBuilder('uf');
+    return queryBuilder;
   }
 }
 

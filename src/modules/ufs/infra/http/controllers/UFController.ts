@@ -11,7 +11,13 @@ export default class UFController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listUFService = container.resolve(ListUFService);
 
-    const ufs = await listUFService.execute();
+    const codigoUF = Number(request.query.codigoUF);
+
+    const { sigla, nome } = request.query;
+
+    const status = Number(request.query.status);
+
+    const ufs = await listUFService.execute({ codigoUF, sigla, nome, status });
 
     return response.json(ufs);
   }
@@ -19,11 +25,11 @@ export default class UFController {
   public async show(request: Request, response: Response): Promise<Response> {
     const codigoUF = Number(request.params.codigoUF);
 
-    console.log(codigoUF, typeof codigoUF);
+    const status = Number(request.query.status);
 
     const showUFService = container.resolve(ShowUFService);
 
-    const customers = await showUFService.execute(codigoUF);
+    const customers = await showUFService.execute(codigoUF, status);
 
     return response.json(customers);
   }
@@ -35,11 +41,7 @@ export default class UFController {
 
     console.log(sigla, nome, status);
 
-    await createUFService.execute({ sigla, nome, status });
-
-    const listUFService = container.resolve(ListUFService);
-
-    const ufs = await listUFService.execute();
+    const ufs = await createUFService.execute({ sigla, nome, status });
 
     return response.json(ufs);
   }
