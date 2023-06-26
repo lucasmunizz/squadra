@@ -1,5 +1,5 @@
 export interface IUF {
-  codigo_uf: number;
+  codigoUF: number;
   sigla: string;
   nome: string;
   status: number;

@@ -30,10 +30,10 @@ class UFRepository implements IUFRepository {
     return uf;
   }
 
-  public async findByCode(codigo_uf: number): Promise<UF | undefined> {
+  public async findByCode(codigoUF: number): Promise<UF | undefined> {
     const uf = this.ormRepository.findOne({
       where: {
-        codigo_uf,
+        codigoUF,
       },
     });
 
@@ -68,6 +68,10 @@ class UFRepository implements IUFRepository {
     const ufs = await this.ormRepository.find();
 
     return ufs;
+  }
+
+  public async remove(uf: UF): Promise<void> {
+    await this.ormRepository.remove(uf);
   }
 }
 

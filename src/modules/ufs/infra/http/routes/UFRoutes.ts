@@ -8,10 +8,10 @@ const ufController = new UFController();
 ufRouter.get('/', ufController.index);
 
 ufRouter.get(
-  '/:codigo_uf',
+  '/:codigoUF',
   celebrate({
-    [Segments.BODY]: {
-      codigo_uf: Joi.number().required(),
+    [Segments.PARAMS]: {
+      codigoUF: Joi.number().required(),
     },
   }),
   ufController.show,
@@ -29,15 +29,26 @@ ufRouter.post(
 );
 
 ufRouter.put(
-  '/:codigo_uf',
+  '/',
   celebrate({
     [Segments.BODY]: {
+      codigoUF: Joi.number().required(),
       sigla: Joi.string().required(),
       nome: Joi.string().required(),
       status: Joi.number().required(),
     },
   }),
   ufController.update,
+);
+
+ufRouter.delete(
+  '/:codigoUF',
+  celebrate({
+    [Segments.PARAMS]: {
+      codigoUF: Joi.number().required(),
+    },
+  }),
+  ufController.delete,
 );
 
 export default ufRouter;

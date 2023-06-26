@@ -5,22 +5,26 @@ import { container } from 'tsyringe';
 import ListUFService from '../../../services/ListUFService';
 import ShowUFService from '../../../services/ShowUFService';
 import UpdateUFService from '../../../services/UpdateUFService';
+import DeleteUFService from '../../../services/DeleteUFService';
+import AppError from '../../../../../shared/errors/AppError';
 
 export default class UFController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listUFService = container.resolve(ListUFService);
 
-    const customers = await listUFService.execute();
+    const ufs = await listUFService.execute();
 
-    return response.json(customers);
+    return response.json(ufs);
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
-    const codigo_uf = Number(request.params.codigo_uf);
+    const codigoUF = Number(request.params.codigoUF);
+
+    console.log(codigoUF, typeof codigoUF);
 
     const showUFService = container.resolve(ShowUFService);
 
-    const customers = await showUFService.execute(codigo_uf);
+    const customers = await showUFService.execute(codigoUF);
 
     return response.json(customers);
   }
@@ -32,27 +36,36 @@ export default class UFController {
 
     console.log(sigla, nome, status);
 
-    const uf = await createUFService.execute({ sigla, nome, status });
+    await createUFService.execute({ sigla, nome, status });
 
-    console.log(sigla, nome, status);
+    const listUFService = container.resolve(ListUFService);
 
-    return response.json(uf);
+    const ufs = await listUFService.execute();
+
+    return response.json(ufs);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const codigo_uf = Number(request.params.codigo_uf);
-
-    const { sigla, nome, status } = request.body;
+    const { codigoUF, sigla, nome, status } = request.body;
 
     const updateUFService = container.resolve(UpdateUFService);
 
     const uf = await updateUFService.execute({
-      codigo_uf,
+      codigoUF,
       sigla,
       nome,
       status,
     });
 
     return response.json(uf);
+  }
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const codigoUF = Number(request.params.codigoUF);
+
+    const deleteUFService = container.resolve(DeleteUFService);
+
+    await deleteUFService.execute(codigoUF);
+
+    return response.json([]);
   }
 }

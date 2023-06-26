@@ -10,4 +10,5 @@ export interface IUFRepository {
   findByCode(code: number): Promise<UF | undefined>;
   create(data: ICreateUF): Promise<UF>;
   save(uf: IUF): Promise<UF>;
+  remove(uf: IUF): Promise<void>;
 }

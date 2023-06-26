@@ -4,19 +4,19 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 
 @injectable()
-export default class ShowUFService {
+export default class DeleteUFService {
   constructor(
     @inject('UFRepository')
     private ufsRepository: IUFRepository,
   ) {}
 
-  public async execute(codigoUF: number): Promise<UF> {
+  public async execute(codigoUF: number): Promise<void> {
     const uf = await this.ufsRepository.findByCode(codigoUF);
 
     if (!uf) {
       throw new AppError('UF não encontrada');
     }
 
-    return uf;
+    await this.ufsRepository.remove(uf);
   }
 }

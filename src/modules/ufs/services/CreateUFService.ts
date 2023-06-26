@@ -3,6 +3,7 @@ import UF from '../infra/typeorm/entities/UF';
 import { ICreateUF } from '../domain/models/ICreateUF';
 import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
+import ValidateUFService from './ValidateUFService';
 
 @injectable()
 export default class CreateUFService {
@@ -11,19 +12,21 @@ export default class CreateUFService {
     private ufsRepository: IUFRepository,
   ) {}
 
-  public async execute({ sigla, nome, status }: ICreateUF): Promise<UF> {
+  public async execute({ sigla, nome, status }: ICreateUF): Promise<void> {
+    const validator = new ValidateUFService();
+
+    validator.validate({ sigla, nome, status });
+
     const ufExists = await this.ufsRepository.findByAcronym(sigla);
 
     if (ufExists) {
       throw new AppError('UF já cadastrada com essa sigla.');
     }
 
-    const uf = await this.ufsRepository.create({
+    await this.ufsRepository.create({
       sigla,
       nome,
       status,
     });
-
-    return uf;
   }
 }

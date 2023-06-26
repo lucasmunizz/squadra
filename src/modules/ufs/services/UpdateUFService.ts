@@ -3,6 +3,7 @@ import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 import { IUF } from '../domain/models/IUF';
+import ValidateUFService from './ValidateUFService';
 
 @injectable()
 export default class UpdateUFService {
@@ -11,8 +12,16 @@ export default class UpdateUFService {
     private ufsRepository: IUFRepository,
   ) {}
 
-  public async execute({ codigo_uf, sigla, nome, status }: IUF): Promise<UF> {
-    const uf = await this.ufsRepository.findByCode(codigo_uf);
+  public async execute({ codigoUF, sigla, nome, status }: IUF): Promise<UF> {
+    const validator = new ValidateUFService();
+
+    validator.validate({ sigla, nome, status });
+
+    if (!codigoUF) {
+      throw new AppError('O campo codigoUF é obrigatório');
+    }
+
+    const uf = await this.ufsRepository.findByCode(codigoUF);
 
     if (!uf) {
       throw new AppError('UF não encontrada.');

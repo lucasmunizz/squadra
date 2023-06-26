@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('TB_UF')
 class UF implements IUF {
   @PrimaryGeneratedColumn()
-  codigo_uf: number;
+  codigoUF: number;
 
   @Column()
   sigla: string;
