@@ -27,10 +27,12 @@ class MunicipioRepository implements IMunicipioRepository {
     return municipio;
   }
 
-  public async findByCode(codigoUF: number): Promise<Municipio | undefined> {
+  public async findByCode(
+    codigoMunicipio: number,
+  ): Promise<Municipio | undefined> {
     const municipio = this.ormRepository.findOne({
       where: {
-        codigoUF,
+        codigoMunicipio,
       },
     });
 
@@ -105,7 +107,7 @@ class MunicipioRepository implements IMunicipioRepository {
     alias?: string,
     queryRunner?: QueryRunner,
   ): SelectQueryBuilder<Municipio> {
-    const queryBuilder = this.ormRepository.createQueryBuilder('uf');
+    const queryBuilder = this.ormRepository.createQueryBuilder('municipio');
     return queryBuilder;
   }
 }

@@ -39,8 +39,6 @@ export default class UFController {
 
     const createUFService = container.resolve(CreateUFService);
 
-    console.log(sigla, nome, status);
-
     const ufs = await createUFService.execute({ sigla, nome, status });
 
     return response.json(ufs);

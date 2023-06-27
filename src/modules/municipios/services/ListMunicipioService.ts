@@ -1,7 +1,5 @@
-import UF from '../infra/typeorm/entities/Municipio';
 import { IMunicipioRepository } from '../domain/repositories/IMunicipioRepository';
 import { inject, injectable } from 'tsyringe';
-import { IUFRepository } from '../../ufs/domain/repositories/IUFRepository';
 
 interface IRequest {
   codigoMunicipio: number;
@@ -13,8 +11,6 @@ interface IRequest {
 @injectable()
 export default class ListMunicipioService {
   constructor(
-    @inject('UFRepository')
-    private ufsRepository: IUFRepository,
     @inject('MunicipioRepository')
     private municipioRepository: IMunicipioRepository,
   ) {}
@@ -24,7 +20,7 @@ export default class ListMunicipioService {
     codigoUF,
     nome,
     status,
-  }: IRequest): Promise<UF[]> {
+  }: IRequest): Promise<any> {
     const queryBuilder =
       this.municipioRepository.createQueryBuilder('municipio');
 
@@ -51,6 +47,16 @@ export default class ListMunicipioService {
 
     const municipios = await queryBuilder.getMany();
 
-    return municipios;
+    if (
+      codigoMunicipio &&
+      !codigoUF &&
+      !nome &&
+      !status &&
+      municipios.length > 0
+    ) {
+      return municipios[0];
+    } else {
+      return municipios;
+    }
   }
 }
