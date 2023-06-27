@@ -1,13 +1,19 @@
 import { IBairroRepository } from '../domain/repositories/IBairroRepository';
 import { inject, injectable } from 'tsyringe';
 import Bairro from '../infra/typeorm/entities/Bairro';
-import { ICreateBairro } from '../domain/models/ICreateBairro';
 import ValidateBairroService from './ValidateBairroService';
 import AppError from '../../../shared/errors/AppError';
 import { IMunicipioRepository } from '../../municipios/domain/repositories/IMunicipioRepository';
 
+interface IRequest {
+  codigoBairro: number;
+  codigoMunicipio: number;
+  nome: string;
+  status: number;
+}
+
 @injectable()
-export default class CreateBairroService {
+export default class UpdateBairroService {
   constructor(
     @inject('BairroRepository')
     private bairroRepository: IBairroRepository,
@@ -16,13 +22,28 @@ export default class CreateBairroService {
   ) {}
 
   public async execute({
+    codigoBairro,
     codigoMunicipio,
     nome,
     status,
-  }: ICreateBairro): Promise<Bairro[]> {
+  }: IRequest): Promise<Bairro[]> {
+    if (!codigoBairro) {
+      throw new AppError('O campo codigoBairro é obrigatório');
+    }
+
+    if (typeof codigoBairro !== 'number') {
+      throw new AppError('O campo codigoBairro deve ser number');
+    }
+
     const validator = new ValidateBairroService();
 
     validator.validate({ codigoMunicipio, nome, status });
+
+    const bairro = await this.bairroRepository.findByCode(codigoBairro);
+
+    if (!bairro) {
+      throw new AppError('Esse bairro não está cadastrado');
+    }
 
     const municipioExists = await this.municipioRepository.findByCode(
       codigoMunicipio,
@@ -38,16 +59,12 @@ export default class CreateBairroService {
     );
 
     if (nomeMunicipioExists) {
-      throw new AppError('Municipio já possui um bairro com esse nome');
+      throw new AppError('Município já possui um bairro com esse nome');
     }
 
-    const bairro = await this.bairroRepository.create({
-      codigoMunicipio,
-      nome,
-      status,
-    });
-
-    bairro.municipio = municipioExists;
+    bairro.codigoMunicipio = codigoMunicipio;
+    bairro.nome = nome;
+    bairro.status = status;
 
     await this.bairroRepository.save(bairro);
 

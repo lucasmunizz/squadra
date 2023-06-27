@@ -8,5 +8,6 @@ const bairroController = new BairroController();
 
 bairroRouter.get('/', bairroController.index);
 bairroRouter.post('/', bairroController.create);
+bairroRouter.put('/', bairroController.update);
 
 export default bairroRouter;

@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 
 import ListBairroService from '../../../services/ListBairroService';
 import CreateBairroService from '../../../services/CreateBairroService';
+import UpdateBairroService from '../../../services/UpdateBairroService';
 
 export default class MunicipioController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -33,6 +34,21 @@ export default class MunicipioController {
     const createBairroService = container.resolve(CreateBairroService);
 
     const bairro = await createBairroService.execute({
+      codigoMunicipio,
+      nome,
+      status,
+    });
+
+    return response.json(bairro);
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { codigoBairro, codigoMunicipio, nome, status } = request.body;
+
+    const updateBairroService = container.resolve(UpdateBairroService);
+
+    const bairro = await updateBairroService.execute({
+      codigoBairro,
       codigoMunicipio,
       nome,
       status,
