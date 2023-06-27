@@ -1,5 +1,6 @@
 import { IMunicipioRepository } from '../domain/repositories/IMunicipioRepository';
 import { inject, injectable } from 'tsyringe';
+import Municipio from '../infra/typeorm/entities/Municipio';
 
 interface IRequest {
   codigoMunicipio: number;
@@ -20,7 +21,7 @@ export default class ListMunicipioService {
     codigoUF,
     nome,
     status,
-  }: IRequest): Promise<any> {
+  }: IRequest): Promise<Municipio | Municipio[]> {
     const queryBuilder =
       this.municipioRepository.createQueryBuilder('municipio');
 
