@@ -16,7 +16,7 @@ class UF implements IUF {
   @Column()
   status: number;
 
-  @OneToMany(() => Municipio, municipio => municipio.codigoMunicipio)
+  @OneToMany(() => Municipio, municipio => municipio.uf)
   municipios: Municipio[];
 }
 

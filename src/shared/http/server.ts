@@ -27,7 +27,7 @@ app.use(
     if (error instanceof AppError) {
       return response.status(error.statusCode).json({
         mensagem: error.message,
-        status: 404,
+        status: error.statusCode,
       });
     }
 

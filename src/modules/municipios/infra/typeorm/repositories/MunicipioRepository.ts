@@ -8,6 +8,7 @@ import Municipio from '../entities/Municipio';
 
 import { IMunicipioRepository } from '../../../domain/repositories/IMunicipioRepository';
 import { ICreateMunicipio } from '../../../domain/models/ICreateMunicipio';
+import UF from '../../../../ufs/infra/typeorm/entities/UF';
 
 class MunicipioRepository implements IMunicipioRepository {
   private ormRepository: Repository<Municipio>;
@@ -69,8 +70,28 @@ class MunicipioRepository implements IMunicipioRepository {
   }
 
   public async find(): Promise<Municipio[]> {
-    const municipio = await this.ormRepository.find({
-      relations: ['codigoUF'],
+    const municipios = await this.ormRepository.find();
+
+    return municipios;
+  }
+
+  public async findWithUF(): Promise<Municipio[]> {
+    const municipios = await this.ormRepository.find({
+      relations: ['uf'],
+    });
+
+    return municipios;
+  }
+
+  public async findMunicipioUF(
+    nome: string,
+    codigoUF: UF,
+  ): Promise<Municipio | undefined> {
+    const municipio = this.ormRepository.findOne({
+      where: {
+        nome,
+        uf: codigoUF,
+      },
     });
 
     return municipio;

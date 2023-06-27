@@ -1,51 +1,56 @@
 import UF from '../infra/typeorm/entities/Municipio';
-import { IUFRepository } from '../domain/repositories/IMunicipioRepository';
+import { IMunicipioRepository } from '../domain/repositories/IMunicipioRepository';
 import { inject, injectable } from 'tsyringe';
-import { ICreateUF } from '../domain/models/ICreateMunicipio';
+import { IUFRepository } from '../../ufs/domain/repositories/IUFRepository';
 
 interface IRequest {
+  codigoMunicipio: number;
   codigoUF: number;
-  sigla: any;
   nome: any;
   status: number;
 }
 
 @injectable()
-export default class ListUFService {
+export default class ListMunicipioService {
   constructor(
     @inject('UFRepository')
     private ufsRepository: IUFRepository,
+    @inject('MunicipioRepository')
+    private municipioRepository: IMunicipioRepository,
   ) {}
 
   public async execute({
+    codigoMunicipio,
     codigoUF,
-    sigla,
     nome,
     status,
   }: IRequest): Promise<UF[]> {
-    const queryBuilder = this.ufsRepository.createQueryBuilder('uf');
+    const queryBuilder =
+      this.municipioRepository.createQueryBuilder('municipio');
 
-    if (!status && !nome && !sigla) {
-      const ufs = await this.ufsRepository.find();
-      return ufs;
+    if (!codigoMunicipio && !codigoUF && !nome && !status) {
+      const municipios = await this.municipioRepository.find();
+      return municipios;
     }
 
     if (codigoUF) {
-      queryBuilder.where('uf.codigoUF = :codigoUF', { codigoUF });
+      queryBuilder.where('municipio.codigoUF = :codigoUF', { codigoUF });
     }
 
     if (status) {
-      queryBuilder.where('uf.status = :status', { status });
+      queryBuilder.where('municipio.status = :status', { status });
     }
     if (nome) {
-      queryBuilder.andWhere('uf.nome LIKE :nome', { nome: `%${nome}%` });
+      queryBuilder.andWhere('municipio.nome LIKE :nome', { nome: `%${nome}%` });
     }
-    if (sigla) {
-      queryBuilder.andWhere('uf.sigla = :sigla', { sigla });
+    if (codigoMunicipio) {
+      queryBuilder.andWhere('municipio.codigoMunicipio = :codigoMunicipio', {
+        codigoMunicipio,
+      });
     }
 
-    const ufs = await queryBuilder.getMany();
+    const municipios = await queryBuilder.getMany();
 
-    return ufs;
+    return municipios;
   }
 }

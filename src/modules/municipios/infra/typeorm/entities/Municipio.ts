@@ -13,7 +13,6 @@ class Municipio implements IMunicipio {
   @PrimaryGeneratedColumn()
   codigoMunicipio: number;
 
-  @ManyToOne(() => Municipio, municipio => municipio.codigoUF)
   @Column()
   codigoUF: number;
 
@@ -22,6 +21,11 @@ class Municipio implements IMunicipio {
 
   @Column()
   status: number;
+
+  @ManyToOne(() => UF, uf => uf.codigoUF, {
+    onDelete: 'CASCADE',
+  })
+  uf: UF;
 }
 
 export default Municipio;

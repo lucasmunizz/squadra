@@ -21,24 +21,24 @@ export default class CreateMunicipioService {
     nome,
     status,
   }: ICreateMunicipio): Promise<Municipio[]> {
-    console.log(codigoUF);
     const validator = new ValidateUFService();
 
-    // validator.validate({ codigoUF, nome, status });
+    validator.validate({ codigoUF, nome, status });
 
     const ufExists = await this.ufsRepository.findByCode(codigoUF);
-
-    console.log(ufExists);
 
     if (!ufExists) {
       throw new AppError('Essa UF não está cadastrada.');
     }
 
-    // const nomeMunicipioExists = await this.municipioRepository.findByName(nome);
+    const nomeMunicipioExists = await this.municipioRepository.findMunicipioUF(
+      nome,
+      ufExists,
+    );
 
-    // if (nomeMunicipioExists?.codigoUF.codigoUF === ufExists.codigoUF) {
-    //   throw new AppError('Já existe um municipio dessa UF com esse nome');
-    // }
+    if (nomeMunicipioExists) {
+      throw new AppError('UF já possui um município com esse nome');
+    }
 
     const municipio = await this.municipioRepository.create({
       codigoUF,
@@ -46,7 +46,9 @@ export default class CreateMunicipioService {
       status,
     });
 
-    console.log(municipio);
+    municipio.uf = ufExists;
+
+    await this.municipioRepository.save(municipio);
 
     const municipios = await this.municipioRepository.find();
     return municipios;

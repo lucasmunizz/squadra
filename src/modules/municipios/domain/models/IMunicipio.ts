@@ -5,4 +5,5 @@ export interface IMunicipio {
   codigoUF: number;
   nome: string;
   status: number;
+  uf: UF;
 }
