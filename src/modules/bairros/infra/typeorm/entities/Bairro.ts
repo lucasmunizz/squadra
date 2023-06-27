@@ -2,7 +2,7 @@ import { IBairro } from '../../../domain/models/IBairro';
 import Municipio from '../../../../municipios/infra/typeorm/entities/Municipio';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('TB_MUNICIPIO')
+@Entity('TB_BAIRRO')
 class Bairro implements IBairro {
   @PrimaryGeneratedColumn()
   codigoBairro: number;
