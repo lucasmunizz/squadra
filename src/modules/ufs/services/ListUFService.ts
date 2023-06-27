@@ -25,7 +25,7 @@ export default class ListUFService {
   }: IRequest): Promise<UF[]> {
     const queryBuilder = this.ufsRepository.createQueryBuilder('uf');
 
-    if (!status && !nome && !sigla) {
+    if (!codigoUF && !status && !nome && !sigla) {
       const ufs = await this.ufsRepository.find();
       return ufs;
     }
