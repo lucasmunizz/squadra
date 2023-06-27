@@ -6,6 +6,8 @@ import CreateMunicipioService from '../../../services/CreateMunicipioService';
 
 import ListMunicipioService from '../../../services/ListMunicipioService';
 
+import UpdateMunicipioService from '../../../services/UpdateMunicipioService';
+
 export default class MunicipioController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listMunicipioService = container.resolve(ListMunicipioService);
@@ -33,6 +35,21 @@ export default class MunicipioController {
     const createMunicipioService = container.resolve(CreateMunicipioService);
 
     const municipio = await createMunicipioService.execute({
+      codigoUF,
+      nome,
+      status,
+    });
+
+    return response.json(municipio);
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { codigoMunicipio, codigoUF, nome, status } = request.body;
+
+    const updateMunicipioService = container.resolve(UpdateMunicipioService);
+
+    const municipio = await updateMunicipioService.execute({
+      codigoMunicipio,
       codigoUF,
       nome,
       status,

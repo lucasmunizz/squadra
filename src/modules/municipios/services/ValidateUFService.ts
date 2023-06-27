@@ -14,5 +14,17 @@ export default class ValidateMunicipioService {
     if (!status) {
       throw new AppError('O campo status é obrigatório');
     }
+
+    if (typeof codigoUF !== 'number') {
+      throw new AppError('O campo codigoUF deve ser um número');
+    }
+
+    if (typeof nome !== 'string') {
+      throw new AppError('O campo codigoUF deve ser um texto');
+    }
+
+    if (typeof status !== 'number') {
+      throw new AppError('O campo codigoUF deve ser um número');
+    }
   }
 }

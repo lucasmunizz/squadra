@@ -8,6 +8,8 @@ const municipioController = new MunicipioController();
 
 municipioRouter.get('/', municipioController.index);
 
+municipioRouter.put('/', municipioController.update);
+
 municipioRouter.post(
   '/',
   celebrate({

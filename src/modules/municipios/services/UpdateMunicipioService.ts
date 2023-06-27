@@ -14,7 +14,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class CreateMunicipioService {
+export default class UpdateMunicipioService {
   constructor(
     @inject('UFRepository')
     private ufsRepository: IUFRepository,
@@ -30,6 +30,10 @@ export default class CreateMunicipioService {
   }: IRequest): Promise<Municipio[]> {
     if (!codigoMunicipio) {
       throw new AppError('O campo codigoMunicipio é obrigatório');
+    }
+
+    if (typeof codigoMunicipio !== 'number') {
+      throw new AppError('O campo codigoMunicipio deve ser um número');
     }
 
     const validator = new ValidateUFService();
@@ -50,6 +54,10 @@ export default class CreateMunicipioService {
       throw new AppError('Essa UF não está cadastrada.');
     }
 
+    if (ufExists.status === 2) {
+      throw new AppError('Essa UF está como status 2 (inválida)');
+    }
+
     const nomeMunicipioExists = await this.municipioRepository.findMunicipioUF(
       nome,
       ufExists,
@@ -58,6 +66,7 @@ export default class CreateMunicipioService {
     if (nomeMunicipioExists) {
       throw new AppError('UF já possui um município com esse nome');
     }
+
     municipio.codigoUF = codigoUF;
     municipio.nome = nome;
     municipio.status = status;
