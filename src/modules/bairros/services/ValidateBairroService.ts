@@ -1,10 +1,10 @@
 import AppError from '../../../shared/errors/AppError';
-import { ICreateMunicipio } from '../domain/models/ICreateMunicipio';
+import { ICreateBairro } from '../domain/models/ICreateBairro';
 
-export default class ValidateMunicipioService {
-  public validate({ codigoUF, nome, status }: ICreateMunicipio): void {
-    if (!codigoUF) {
-      throw new AppError('O campo codigoUF é obrigatório');
+export default class ValidateBairroService {
+  public validate({ codigoMunicipio, nome, status }: ICreateBairro): void {
+    if (!codigoMunicipio) {
+      throw new AppError('O campo codigoMunicipio é obrigatório');
     }
 
     if (!nome) {
@@ -15,8 +15,8 @@ export default class ValidateMunicipioService {
       throw new AppError('O campo status é obrigatório');
     }
 
-    if (typeof codigoUF !== 'number') {
-      throw new AppError('O campo codigoUF deve ser um número');
+    if (typeof codigoMunicipio !== 'number') {
+      throw new AppError('O campo codigoMunicipio deve ser um número');
     }
 
     if (typeof nome !== 'string') {

@@ -1,62 +1,57 @@
 import { IBairroRepository } from '../domain/repositories/IBairroRepository';
 import { inject, injectable } from 'tsyringe';
 import Bairro from '../infra/typeorm/entities/Bairro';
-
-interface IRequest {
-  codigoBairro: number;
-  codigoMunicipio: number;
-  nome: any;
-  status: number;
-}
+import { ICreateBairro } from '../domain/models/ICreateBairro';
+import ValidateBairroService from './ValidateBairroService';
+import AppError from '../../../shared/errors/AppError';
+import { IMunicipioRepository } from '../../municipios/domain/repositories/IMunicipioRepository';
 
 @injectable()
-export default class ListBairroService {
+export default class CreateBairroService {
   constructor(
     @inject('BairroRepository')
     private bairroRepository: IBairroRepository,
+    @inject('MunicipioRepository')
+    private municipioRepository: IMunicipioRepository,
   ) {}
 
   public async execute({
-    codigoBairro,
     codigoMunicipio,
     nome,
     status,
-  }: IRequest): Promise<Bairro | Bairro[]> {
-    const queryBuilder = this.bairroRepository.createQueryBuilder('bairro');
+  }: ICreateBairro): Promise<Bairro[]> {
+    const validator = new ValidateBairroService();
 
-    if (!codigoBairro && !codigoMunicipio && !nome && !status) {
-      const municipios = await this.bairroRepository.find();
-      return municipios;
-    }
+    validator.validate({ codigoMunicipio, nome, status });
 
-    if (codigoBairro) {
-      queryBuilder.where('bairro.codigoBairro = :codigoUF', { codigoBairro });
-    }
+    const municipioExists = await this.municipioRepository.findByCode(
+      codigoMunicipio,
+    );
 
-    if (status) {
-      queryBuilder.where('bairro.status = :status', { status });
-    }
-    if (nome) {
-      queryBuilder.andWhere('bairro.nome LIKE :nome', { nome: `%${nome}%` });
-    }
-    if (codigoMunicipio) {
-      queryBuilder.andWhere('bairro.codigoMunicipio = :codigoMunicipio', {
-        codigoMunicipio,
-      });
+    if (!municipioExists) {
+      throw new AppError('Esse municipio não está cadastrada.');
     }
 
-    const bairros = await queryBuilder.getMany();
+    const nomeMunicipioExists = await this.bairroRepository.findBairroMunicipio(
+      nome,
+      municipioExists,
+    );
 
-    if (
-      codigoBairro &&
-      !codigoMunicipio &&
-      !nome &&
-      !status &&
-      bairros.length > 0
-    ) {
-      return bairros[0];
-    } else {
-      return bairros;
+    if (nomeMunicipioExists) {
+      throw new AppError('UF já possui um município com esse nome');
     }
+
+    const bairro = await this.bairroRepository.create({
+      codigoMunicipio,
+      nome,
+      status,
+    });
+
+    bairro.municipio = municipioExists;
+
+    await this.bairroRepository.save(bairro);
+
+    const bairros = await this.bairroRepository.find();
+    return bairros;
   }
 }
