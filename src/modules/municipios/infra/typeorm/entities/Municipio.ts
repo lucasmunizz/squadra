@@ -1,10 +1,11 @@
 import UF from '../../../../ufs/infra/typeorm/entities/UF';
 import { IMunicipio } from '../../../domain/models/IMunicipio';
+import Bairro from '../../../../bairros/infra/typeorm/entities/Bairro';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,6 +27,9 @@ class Municipio implements IMunicipio {
     onDelete: 'CASCADE',
   })
   uf: UF;
+
+  @OneToMany(() => Bairro, bairro => bairro.municipio)
+  bairros: Bairro[];
 }
 
 export default Municipio;
