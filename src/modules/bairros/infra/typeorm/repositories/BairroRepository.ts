@@ -90,7 +90,7 @@ class BairroRepository implements IBairroRepository {
     const bairro = this.ormRepository.findOne({
       where: {
         nome,
-        codigoMunicipio: codigoMunicipio,
+        municipio: codigoMunicipio,
       },
     });
 

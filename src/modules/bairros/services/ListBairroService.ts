@@ -30,7 +30,9 @@ export default class ListBairroService {
     }
 
     if (codigoBairro) {
-      queryBuilder.where('bairro.codigoBairro = :codigoUF', { codigoBairro });
+      queryBuilder.where('bairro.codigoBairro = :codigoBairro', {
+        codigoBairro,
+      });
     }
 
     if (status) {
