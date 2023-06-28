@@ -12,6 +12,9 @@ import BairroRepository from '../../modules/bairros/infra/typeorm/repositories/B
 import { IPessoaRepository } from '../../modules/pessoas/domain/repositories/IPessoaRepository';
 import PessoaRepository from '../../modules/pessoas/infra/typeorm/repositories/PessoaRepository';
 
+import { IEnderecoRepository } from '../../modules/enderecos/domain/repositories/IEnderecoRepository';
+import EnderecoRepository from '../../modules/enderecos/infra/typeorm/repositories/EnderecoRepository';
+
 container.registerSingleton<IUFRepository>('UFRepository', UFRepository);
 container.registerSingleton<IMunicipioRepository>(
   'MunicipioRepository',
@@ -24,4 +27,8 @@ container.registerSingleton<IBairroRepository>(
 container.registerSingleton<IPessoaRepository>(
   'PessoaRepository',
   PessoaRepository,
+);
+container.registerSingleton<IEnderecoRepository>(
+  'EnderecoRepository',
+  EnderecoRepository,
 );
