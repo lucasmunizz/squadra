@@ -9,6 +9,9 @@ import MunicipioRepository from '../../modules/municipios/infra/typeorm/reposito
 import { IBairroRepository } from '../../modules/bairros/domain/repositories/IBairroRepository';
 import BairroRepository from '../../modules/bairros/infra/typeorm/repositories/BairroRepository';
 
+import { IPessoaRepository } from '../../modules/pessoas/domain/repositories/IPessoaRepository';
+import PessoaRepository from '../../modules/pessoas/infra/typeorm/repositories/PessoaRepository';
+
 container.registerSingleton<IUFRepository>('UFRepository', UFRepository);
 container.registerSingleton<IMunicipioRepository>(
   'MunicipioRepository',
@@ -17,4 +20,8 @@ container.registerSingleton<IMunicipioRepository>(
 container.registerSingleton<IBairroRepository>(
   'BairroRepository',
   BairroRepository,
+);
+container.registerSingleton<IPessoaRepository>(
+  'PessoaRepository',
+  PessoaRepository,
 );
