@@ -12,8 +12,8 @@ export interface IMunicipioRepository {
   findByCode(code: number): Promise<Municipio | undefined>;
   findMunicipioUF(nome: string, codigoUF: UF): Promise<Municipio | undefined>;
   create(data: ICreateMunicipio): Promise<Municipio>;
-  save(uf: IMunicipio): Promise<Municipio>;
-  remove(uf: IMunicipio): Promise<void>;
+  save(municipio: IMunicipio): Promise<Municipio>;
+  remove(municipio: IMunicipio): Promise<void>;
   createQueryBuilder(
     alias?: string,
     queryRunner?: QueryRunner,
