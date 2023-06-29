@@ -49,6 +49,7 @@ class EnderecoRepository implements IEnderecoRepository {
 
   public async create({
     codigoBairro,
+    codigoPessoa,
     nomeRua,
     numero,
     complemento,
@@ -56,6 +57,7 @@ class EnderecoRepository implements IEnderecoRepository {
   }: ICreateEndereco): Promise<Endereco> {
     const endereco = this.ormRepository.create({
       codigoBairro,
+      codigoPessoa,
       nomeRua,
       numero,
       complemento,

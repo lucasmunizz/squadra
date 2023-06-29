@@ -1,6 +1,5 @@
-export interface ICreateEndereco {
+export interface IValidateEndereco {
   codigoBairro: number;
-  codigoPessoa: number;
   nomeRua: string;
   numero: string;
   complemento: string;
