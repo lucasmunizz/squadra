@@ -49,10 +49,6 @@ export default class CreatePessoaService {
       status,
     });
 
-    // if (!enderecos || enderecos.length === 0) {
-    //   throw new AppError('Pelo menos um endereço é obrigatório');
-    // }
-
     const loginExists = await this.pessoaRepository.findByLogin(login);
 
     if (loginExists) {

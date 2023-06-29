@@ -99,19 +99,20 @@ class PessoaRepository implements IPessoaRepository {
     return pessoa;
   }
 
-  // public async findMunicipioUF(
-  //   nome: string,
-  //   codigoUF: UF,
-  // ): Promise<Pessoa | undefined> {
-  //   const municipio = this.ormRepository.findOne({
-  //     where: {
-  //       nome,
-  //       uf: codigoUF,
-  //     },
-  //   });
+  public async findWithAddress(
+    codigoPessoa: number,
+  ): Promise<Pessoa | undefined> {
+    const pessoa = this.ormRepository.findOne(codigoPessoa, {
+      relations: [
+        'enderecos',
+        'enderecos.bairro',
+        'enderecos.bairro.municipio',
+        'enderecos.bairro.municipio.uf',
+      ],
+    });
 
-  //   return municipio;
-  // }
+    return pessoa;
+  }
 
   public async remove(pessoa: Pessoa): Promise<void> {
     await this.ormRepository.remove(pessoa);

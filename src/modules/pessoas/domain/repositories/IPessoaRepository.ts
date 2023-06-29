@@ -18,4 +18,5 @@ export interface IPessoaRepository {
     alias?: string,
     queryRunner?: QueryRunner,
   ): SelectQueryBuilder<Pessoa>;
+  findWithAddress(codigoPessoa: number): Promise<Pessoa | undefined>;
 }
