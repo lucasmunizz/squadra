@@ -12,9 +12,9 @@ export default class MunicipioController {
 
     const createPessoaService = container.resolve(CreatePessoaService);
 
-    const validateEnderecoService = new ValidateBairroService();
+    const validateEnderecoService = container.resolve(ValidateBairroService);
 
-    validateEnderecoService.validateInput(enderecos);
+    await validateEnderecoService.validateInput(enderecos);
 
     const pessoa = await createPessoaService.execute({
       nome,

@@ -100,6 +100,8 @@ export default class CreatePessoaService {
       };
     });
 
+    console.log(pessoa);
+
     return pessoasSemEnderecos;
   }
 }

@@ -1,5 +1,3 @@
-import Endereco from '../../../enderecos/infra/typeorm/entities/Endereco';
-
 export interface ICreatePessoa {
   nome: string;
   sobrenome: string;
