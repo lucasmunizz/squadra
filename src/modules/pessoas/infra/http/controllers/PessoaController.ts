@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
 import { container } from 'tsyringe';
-
 import CreatePessoaService from '../../../services/CreatePessoaService';
-import ValidateBairroService from '../../../../enderecos/services/ValidateEnderecoService';
+import UpdatePessoaService from '../../../services/UpdatePessoaService';
+import ValidateEnderecoService from '../../../../enderecos/services/ValidateEnderecoService';
 import ListPessoaService from '../../../services/ListPessoaService';
 
 export default class MunicipioController {
@@ -30,11 +30,43 @@ export default class MunicipioController {
 
     const createPessoaService = container.resolve(CreatePessoaService);
 
-    const validateEnderecoService = container.resolve(ValidateBairroService);
+    const validateEnderecoService = container.resolve(ValidateEnderecoService);
 
     await validateEnderecoService.validateInput(enderecos);
 
     const pessoa = await createPessoaService.execute({
+      nome,
+      sobrenome,
+      idade,
+      login,
+      senha,
+      status,
+      enderecos,
+    });
+
+    return response.json(pessoa);
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const {
+      codigoPessoa,
+      nome,
+      sobrenome,
+      idade,
+      login,
+      senha,
+      status,
+      enderecos,
+    } = request.body;
+
+    const updatePessoaService = container.resolve(UpdatePessoaService);
+
+    const validateEnderecoService = container.resolve(ValidateEnderecoService);
+
+    await validateEnderecoService.validateInput(enderecos);
+
+    const pessoa = await updatePessoaService.execute({
+      codigoPessoa,
       nome,
       sobrenome,
       idade,

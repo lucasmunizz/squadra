@@ -35,7 +35,6 @@ class Endereco implements IEndereco {
     onDelete: 'CASCADE',
   })
   pessoa: Pessoa;
-  enderecoEntity: Promise<Bairro | undefined>;
 }
 
 export default Endereco;

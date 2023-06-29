@@ -6,5 +6,6 @@ const pessoaController = new PessoaController();
 
 pessoaRouter.get('/', pessoaController.index);
 pessoaRouter.post('/', pessoaController.create);
+pessoaRouter.put('/', pessoaController.update);
 
 export default pessoaRouter;
