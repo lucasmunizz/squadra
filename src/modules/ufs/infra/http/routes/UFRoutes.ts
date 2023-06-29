@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import { Segments, Joi, celebrate } from 'celebrate';
 import UFController from '../controllers/UFController';
+import isAuthenticated from '../../../../../shared/http/middlewares/isAuthenticated';
 
 const ufRouter = Router();
 const ufController = new UFController();
+
+ufRouter.use(isAuthenticated);
 
 ufRouter.get('/', ufController.index);
 
