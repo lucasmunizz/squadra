@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 import ListBairroService from '../../../services/ListBairroService';
 import CreateBairroService from '../../../services/CreateBairroService';
 import UpdateBairroService from '../../../services/UpdateBairroService';
+import DeleteBairroService from '../../../services/DeleteBairroService';
 
 export default class MunicipioController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -55,5 +56,15 @@ export default class MunicipioController {
     });
 
     return response.json(bairro);
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const codigoBairro = Number(request.params.codigoBairro);
+
+    const deleteBairroService = container.resolve(DeleteBairroService);
+
+    await deleteBairroService.execute(codigoBairro);
+
+    return response.json([]);
   }
 }

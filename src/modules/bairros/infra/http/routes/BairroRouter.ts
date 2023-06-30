@@ -12,5 +12,6 @@ bairroRouter.use(isAuthenticated);
 bairroRouter.get('/', bairroController.index);
 bairroRouter.post('/', bairroController.create);
 bairroRouter.put('/', bairroController.update);
+bairroRouter.delete('/:codigoBairro', bairroController.delete);
 
 export default bairroRouter;

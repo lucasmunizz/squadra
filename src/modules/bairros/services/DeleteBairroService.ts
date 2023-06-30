@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 
 @injectable()
-export default class DeleteUFService {
+export default class DeleteBairroService {
   constructor(
     @inject('BairroRepository')
     private bairroRepository: IBairroRepository,
