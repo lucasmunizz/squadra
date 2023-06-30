@@ -5,6 +5,7 @@ import CreatePessoaService from '../../../services/CreatePessoaService';
 import UpdatePessoaService from '../../../services/UpdatePessoaService';
 import ValidateEnderecoService from '../../../../enderecos/services/ValidateEnderecoService';
 import ListPessoaService from '../../../services/ListPessoaService';
+import DeletePessoaService from '../../../services/DeletePessoaService';
 
 export default class MunicipioController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -77,5 +78,14 @@ export default class MunicipioController {
     });
 
     return response.json(pessoa);
+  }
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const codigoPessoa = Number(request.params.codigoPessoa);
+
+    const deletePessoaService = container.resolve(DeletePessoaService);
+
+    await deletePessoaService.execute(codigoPessoa);
+
+    return response.json([]);
   }
 }
