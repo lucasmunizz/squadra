@@ -8,6 +8,8 @@ import ListMunicipioService from '../../../services/ListMunicipioService';
 
 import UpdateMunicipioService from '../../../services/UpdateMunicipioService';
 
+import DeleteMunicipioService from '../../../services/DeleteMunicipioService';
+
 export default class MunicipioController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listMunicipioService = container.resolve(ListMunicipioService);
@@ -56,5 +58,15 @@ export default class MunicipioController {
     });
 
     return response.json(municipio);
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const codigoMunicipio = Number(request.params.codigoMunicipio);
+
+    const deleteUFService = container.resolve(DeleteMunicipioService);
+
+    await deleteUFService.execute(codigoMunicipio);
+
+    return response.json([]);
   }
 }

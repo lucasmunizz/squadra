@@ -13,6 +13,8 @@ municipioRouter.get('/', municipioController.index);
 
 municipioRouter.put('/', municipioController.update);
 
+municipioRouter.delete('/:codigoMunicipio', municipioController.delete);
+
 municipioRouter.post(
   '/',
   celebrate({
