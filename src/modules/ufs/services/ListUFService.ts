@@ -22,7 +22,7 @@ export default class ListUFService {
     sigla,
     nome,
     status,
-  }: IRequest): Promise<UF[]> {
+  }: IRequest): Promise<UF[] | UF> {
     const queryBuilder = this.ufsRepository.createQueryBuilder('uf');
 
     if (!codigoUF && !status && !nome && !sigla) {
@@ -45,6 +45,18 @@ export default class ListUFService {
     }
 
     const ufs = await queryBuilder.getMany();
+
+    if (codigoUF && !status && !nome && !sigla && ufs.length > 0) {
+      return ufs[0];
+    }
+
+    if (!codigoUF && !status && !nome && sigla && ufs.length > 0) {
+      return ufs[0];
+    }
+
+    if (!codigoUF && !status && nome && !sigla && ufs.length > 0) {
+      return ufs[0];
+    }
 
     return ufs;
   }
