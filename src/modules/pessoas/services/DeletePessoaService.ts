@@ -5,7 +5,7 @@ import AppError from '../../../shared/errors/AppError';
 @injectable()
 export default class DeletePessoaService {
   constructor(
-    @inject('UFRepository')
+    @inject('PessoaRepository')
     private pessoaRepository: IPessoaRepository,
   ) {}
 
