@@ -25,7 +25,9 @@ class Pessoa implements IPessoa {
   @Column()
   status: number;
 
-  @OneToMany(() => Endereco, endereco => endereco.pessoa)
+  @OneToMany(() => Endereco, endereco => endereco.pessoa, {
+    onDelete: 'CASCADE',
+  })
   enderecos: Endereco[];
 }
 

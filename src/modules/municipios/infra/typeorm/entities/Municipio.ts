@@ -28,7 +28,9 @@ class Municipio implements IMunicipio {
   })
   uf: UF;
 
-  @OneToMany(() => Bairro, bairro => bairro.municipio)
+  @OneToMany(() => Bairro, bairro => bairro.municipio, {
+    onDelete: 'CASCADE',
+  })
   bairros: Bairro[];
 }
 

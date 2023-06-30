@@ -16,7 +16,9 @@ class UF implements IUF {
   @Column()
   status: number;
 
-  @OneToMany(() => Municipio, municipio => municipio.uf)
+  @OneToMany(() => Municipio, municipio => municipio.uf, {
+    onDelete: 'CASCADE',
+  })
   municipios: Municipio[];
 }
 
