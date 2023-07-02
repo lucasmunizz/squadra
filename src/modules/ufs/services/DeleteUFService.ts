@@ -13,7 +13,7 @@ export default class DeleteUFService {
     const uf = await this.ufsRepository.findByCode(codigoUF);
 
     if (!uf) {
-      throw new AppError('UF não encontrada');
+      throw new AppError('UF não encontrada', 404);
     }
 
     await this.ufsRepository.remove(uf);

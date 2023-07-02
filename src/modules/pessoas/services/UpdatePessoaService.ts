@@ -1,7 +1,6 @@
 import { IPessoaRepository } from '../domain/repositories/IPessoaRepository';
 import { inject, injectable } from 'tsyringe';
 import Pessoa from '../infra/typeorm/entities/Pessoa';
-import { ICreatePessoa } from '../domain/models/ICreatePessoa';
 import ValidatePessoaService from './ValidatePessoaService';
 import AppError from '../../../shared/errors/AppError';
 import { IEnderecoRepository } from '../../enderecos/domain/repositories/IEnderecoRepository';

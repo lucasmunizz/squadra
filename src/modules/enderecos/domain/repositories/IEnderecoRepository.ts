@@ -2,7 +2,6 @@ import { QueryRunner, SelectQueryBuilder } from 'typeorm';
 import Endereco from '../../infra/typeorm/entities/Endereco';
 import { IEndereco } from '../models/IEndereco';
 import { ICreateEndereco } from '../models/ICreateEndereco';
-import UF from '../../../ufs/infra/typeorm/entities/UF';
 
 export interface IEnderecoRepository {
   find(): Promise<Endereco[]>;

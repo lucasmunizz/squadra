@@ -6,15 +6,13 @@ import cors from 'cors';
 import routes from './routes';
 import AppError from '../errors/AppError';
 import '../typeorm';
-import uploadConfig from '../../config/upload';
 import '../container';
+import swaggerDocs from '../../../swagger';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.get('/files', express.static(uploadConfig.directory));
 
 app.use(routes);
 
@@ -38,4 +36,7 @@ app.use(
   },
 );
 
-app.listen(3333, () => 'Server running at the http://localhost:3333');
+app.listen(3333, async () => {
+  'Server running at the http://localhost:3333';
+  swaggerDocs(app, 3333);
+});

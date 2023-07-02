@@ -63,8 +63,6 @@ export default class UpdateEnderecoService {
           enderecoExists,
         );
 
-        console.log(enderecoAtualizado);
-
         enderecosAtualizados.push(enderecoAtualizado);
       } else {
         const bairroExists = await this.bairroRepository.findByCode(

@@ -8,8 +8,6 @@ interface IRequest {
 
 export default class ValidatePessoaService {
   public validate({ codigoPessoa, login, status }: IRequest): void {
-    console.log(codigoPessoa);
-
     if (codigoPessoa.toLocaleString().length === 0) {
       if (isNaN(codigoPessoa)) {
         throw new AppError(

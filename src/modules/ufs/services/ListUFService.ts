@@ -1,8 +1,6 @@
 import UF from '../infra/typeorm/entities/UF';
 import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
-import { z } from 'zod';
-import AppError from '../../../shared/errors/AppError';
 
 interface IRequest {
   codigoUF: number;

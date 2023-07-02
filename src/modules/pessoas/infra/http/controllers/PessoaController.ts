@@ -3,17 +3,14 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreatePessoaService from '../../../services/CreatePessoaService';
 import UpdatePessoaService from '../../../services/UpdatePessoaService';
-import ValidateEnderecoService from '../../../../enderecos/services/ValidateEnderecoService';
 import ListPessoaService from '../../../services/ListPessoaService';
 import DeletePessoaService from '../../../services/DeletePessoaService';
 
-export default class MunicipioController {
+export default class PessoaController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listPessoaService = container.resolve(ListPessoaService);
 
     const codigoPessoa = Number(request.query.codigoPessoa);
-
-    console.log(typeof codigoPessoa);
 
     const { login } = request.query;
 
