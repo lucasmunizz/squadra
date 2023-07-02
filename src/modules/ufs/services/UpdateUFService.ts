@@ -12,7 +12,7 @@ export default class UpdateUFService {
     private ufsRepository: IUFRepository,
   ) {}
 
-  public async execute({ codigoUF, sigla, nome, status }: IUF): Promise<UF> {
+  public async execute({ codigoUF, sigla, nome, status }: IUF): Promise<UF[]> {
     const validator = new ValidateUFService();
 
     validator.validate({ sigla, nome, status });
@@ -45,6 +45,8 @@ export default class UpdateUFService {
 
     await this.ufsRepository.save(uf);
 
-    return uf;
+    const ufs = await this.ufsRepository.find();
+
+    return ufs;
   }
 }

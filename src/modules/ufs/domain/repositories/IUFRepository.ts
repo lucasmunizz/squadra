@@ -16,4 +16,52 @@ export interface IUFRepository {
     alias?: string,
     queryRunner?: QueryRunner,
   ): SelectQueryBuilder<UF>;
+  findByAcronymAndName(sigla: string, name: string): Promise<UF | undefined>;
+
+  findByCodeAndAcronym(
+    codigoUF: number,
+    sigla: string,
+  ): Promise<UF | undefined>;
+
+  findByCodeAndName(codigoUF: number, nome: string): Promise<UF | undefined>;
+  findByCodeAndAcronymAndName(
+    codigoUF: number,
+    sigla: string,
+    name: string,
+  ): Promise<UF | undefined>;
+  findByCodeAndAcronymAndNameAndStatus(
+    codigoUF: number,
+    sigla: string,
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined>;
+
+  findByAcronymAndNameAndStatus(
+    sigla: string,
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined>;
+
+  findByCodeAndStatus(
+    codigoUF: number,
+    status: number,
+  ): Promise<UF | undefined>;
+
+  findByAcronymAndStatus(
+    sigla: string,
+    status: number,
+  ): Promise<UF | undefined>;
+
+  findByNameAndStatus(nome: string, status: number): Promise<UF | undefined>;
+  findByCodeAndAcronymAndStatus(
+    codigoUF: number,
+    sigla: string,
+    status: number,
+  ): Promise<UF | undefined>;
+
+  findByCodeAndNameAndStatus(
+    codigoUF: number,
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined>;
 }

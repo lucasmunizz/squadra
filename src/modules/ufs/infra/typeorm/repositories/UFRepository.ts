@@ -16,19 +16,184 @@ class UFRepository implements IUFRepository {
   }
 
   public async findByName(nome: string): Promise<UF | undefined> {
-    const user = this.ormRepository.findOne({
+    const uf = this.ormRepository.findOne({
       where: {
         nome,
       },
     });
 
-    return user;
+    return uf;
   }
 
   public async findByAcronym(sigla: string): Promise<UF | undefined> {
     const uf = this.ormRepository.findOne({
       where: {
         sigla,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByAcronymAndName(
+    sigla: string,
+    nome: string,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        sigla,
+        nome,
+      },
+    });
+
+    return uf;
+  }
+  public async findByCodeAndAcronymAndName(
+    codigoUF: number,
+    sigla: string,
+    nome: string,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        sigla,
+        nome,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByCodeAndAcronymAndNameAndStatus(
+    codigoUF: number,
+    sigla: string,
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        sigla,
+        nome,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByAcronymAndNameAndStatus(
+    sigla: string,
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        sigla,
+        nome,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByCodeAndStatus(
+    codigoUF: number,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByAcronymAndStatus(
+    sigla: string,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        sigla,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByCodeAndAcronymAndStatus(
+    codigoUF: number,
+    sigla: string,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        sigla,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByCodeAndNameAndStatus(
+    codigoUF: number,
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        nome,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByNameAndStatus(
+    nome: string,
+    status: number,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        nome,
+        status,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByCodeAndAcronym(
+    codigoUF: number,
+    sigla: string,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        sigla,
+      },
+    });
+
+    return uf;
+  }
+
+  public async findByCodeAndName(
+    codigoUF: number,
+    nome: string,
+  ): Promise<UF | undefined> {
+    const uf = this.ormRepository.findOne({
+      where: {
+        codigoUF,
+        nome,
       },
     });
 
@@ -45,7 +210,7 @@ class UFRepository implements IUFRepository {
     return uf;
   }
 
-  public async findByStatus(status: string): Promise<UF | undefined> {
+  public async findByStatus(status: number): Promise<UF | undefined> {
     const uf = this.ormRepository.findOne({
       where: {
         status,

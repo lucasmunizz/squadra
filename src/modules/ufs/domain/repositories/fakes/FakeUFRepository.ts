@@ -2,9 +2,7 @@ import UF from '../../../infra/typeorm/entities/UF';
 import { IUFRepository } from '../../../domain/repositories/IUFRepository';
 import { ICreateUF } from '../../../domain/models/ICreateUF';
 
-class FakeUFRepository
-  implements Omit<IUFRepository, 'remove' | 'createQueryBuilder' | 'find'>
-{
+class FakeUFRepository implements IUFRepository {
   private ufs: UF[] = [];
 
   public async findByName(nome: string): Promise<UF | undefined> {
@@ -48,6 +46,14 @@ class FakeUFRepository
     Object.assign(this.ufs, uf);
 
     return uf;
+  }
+
+  public async remove(uf: UF): Promise<void> {
+    uf.nome = 'oi';
+  }
+
+  public async find(): Promise<UF[]> {
+    return this.ufs;
   }
 }
 
