@@ -107,6 +107,12 @@ class EnderecoRepository implements IEnderecoRepository {
     await this.ormRepository.remove(endereco);
   }
 
+  public async delete(codigoEndereco: number): Promise<void> {
+    await this.ormRepository.delete({
+      codigoEndereco,
+    });
+  }
+
   public createQueryBuilder(
     alias?: string,
     queryRunner?: QueryRunner,

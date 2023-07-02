@@ -15,4 +15,5 @@ export interface IEnderecoRepository {
     alias?: string,
     queryRunner?: QueryRunner,
   ): SelectQueryBuilder<Endereco>;
+  delete(codigoEndereco: number): Promise<void>;
 }

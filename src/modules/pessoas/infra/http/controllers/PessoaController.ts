@@ -13,6 +13,8 @@ export default class MunicipioController {
 
     const codigoPessoa = Number(request.query.codigoPessoa);
 
+    console.log(typeof codigoPessoa);
+
     const { login } = request.query;
 
     const status = Number(request.query.status);
@@ -30,10 +32,6 @@ export default class MunicipioController {
       request.body;
 
     const createPessoaService = container.resolve(CreatePessoaService);
-
-    const validateEnderecoService = container.resolve(ValidateEnderecoService);
-
-    await validateEnderecoService.validateInput(enderecos);
 
     const pessoa = await createPessoaService.execute({
       nome,
@@ -61,10 +59,6 @@ export default class MunicipioController {
     } = request.body;
 
     const updatePessoaService = container.resolve(UpdatePessoaService);
-
-    const validateEnderecoService = container.resolve(ValidateEnderecoService);
-
-    await validateEnderecoService.validateInput(enderecos);
 
     const pessoa = await updatePessoaService.execute({
       codigoPessoa,

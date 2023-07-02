@@ -36,5 +36,27 @@ export default class ValidatePessoaService {
     if (!status) {
       throw new AppError('O campo status é obrigatório');
     }
+
+    if (typeof nome !== 'string') {
+      throw new AppError('O campo nome deve ser um texto');
+    }
+    if (typeof sobrenome !== 'string') {
+      throw new AppError('O campo sobrenome deve ser um texto');
+    }
+    if (typeof idade !== 'number') {
+      throw new AppError('O campo idade deve ser um número');
+    }
+
+    if (typeof login !== 'string') {
+      throw new AppError('O campo login deve ser um texto');
+    }
+
+    if (typeof senha !== 'string') {
+      throw new AppError('O campo senha deve ser um texto');
+    }
+
+    if (typeof status !== 'number') {
+      throw new AppError('O campo status deve ser um número');
+    }
   }
 }

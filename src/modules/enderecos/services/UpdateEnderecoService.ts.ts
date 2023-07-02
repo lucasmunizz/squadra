@@ -51,7 +51,7 @@ export default class UpdateEnderecoService {
             'Não há nenhum endereço cadastrado com esse código',
           );
         }
-
+        enderecoExists.codigoPessoa = pessoa.codigoPessoa;
         enderecoExists.nomeRua = nomeRua;
         enderecoExists.numero = numero;
         enderecoExists.complemento = complemento;
@@ -62,6 +62,8 @@ export default class UpdateEnderecoService {
         const enderecoAtualizado = await this.enderecoRepository.save(
           enderecoExists,
         );
+
+        console.log(enderecoAtualizado);
 
         enderecosAtualizados.push(enderecoAtualizado);
       } else {
@@ -92,16 +94,21 @@ export default class UpdateEnderecoService {
     }
 
     if (pessoa.enderecos) {
-      pessoa.enderecos.forEach(async (endereco: Endereco) => {
-        if (
-          !enderecos ||
-          !enderecos.some(
-            (e: Endereco) => e.codigoEndereco === endereco.codigoEndereco,
-          )
-        ) {
-          await this.enderecoRepository.remove(endereco);
-        }
-      });
+      const codigosEndereco = pessoa.enderecos.map(
+        endereco => endereco.codigoEndereco,
+      );
+
+      const enderecosRemover = await this.enderecoRepository
+        .createQueryBuilder('endereco')
+        .where('endereco.codigoEndereco NOT IN (:...codigosEndereco)', {
+          codigosEndereco,
+        })
+        .andWhere('endereco.pessoa = :pessoa', { pessoa: pessoa.codigoPessoa })
+        .getMany();
+
+      for (const enderecoRemover of enderecosRemover) {
+        await this.enderecoRepository.remove(enderecoRemover);
+      }
     }
 
     return enderecosAtualizados;

@@ -34,6 +34,30 @@ export default class ValidateEnderecoService {
     if (!cep) {
       throw new AppError('O campo cep é obrigatório');
     }
+
+    if (typeof codigoBairro !== 'number') {
+      throw new AppError('O campo codigoBairro deve ser um texto');
+    }
+
+    if (typeof nomeRua !== 'string') {
+      throw new AppError('O campo nomeRua deve ser um texto');
+    }
+
+    if (typeof numero !== 'string') {
+      throw new AppError('O campo numero deve ser um texto');
+    }
+
+    if (typeof complemento !== 'string') {
+      throw new AppError('O campo complemento deve ser um texto');
+    }
+
+    if (typeof complemento !== 'string') {
+      throw new AppError('O campo complemento deve ser um texto');
+    }
+
+    if (typeof cep !== 'string') {
+      throw new AppError('O campo cep deve ser um texto');
+    }
   }
 
   public async validateInput(enderecos: Endereco[]) {
@@ -45,6 +69,14 @@ export default class ValidateEnderecoService {
       enderecos.map(async endereco => {
         const { codigoBairro, nomeRua, numero, complemento, cep } = endereco;
 
+        this.validate({
+          codigoBairro,
+          nomeRua,
+          numero,
+          complemento,
+          cep,
+        });
+
         const bairroExists = await this.bairroRepository.findByCode(
           codigoBairro,
         );
@@ -54,14 +86,6 @@ export default class ValidateEnderecoService {
             'Não existe nenhum bairro com esse código cadastrado',
           );
         }
-
-        this.validate({
-          codigoBairro,
-          nomeRua,
-          numero,
-          complemento,
-          cep,
-        });
       }),
     );
   }

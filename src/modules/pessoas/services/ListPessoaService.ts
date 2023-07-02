@@ -1,6 +1,7 @@
 import { IPessoaRepository } from '../domain/repositories/IPessoaRepository';
 import { inject, injectable } from 'tsyringe';
 import Pessoa from '../infra/typeorm/entities/Pessoa';
+import ValidatePessoaService from './ValidateListPessoaService';
 
 interface IRequest {
   codigoPessoa: number;
@@ -20,6 +21,10 @@ export default class ListPessoaService {
     login,
     status,
   }: IRequest): Promise<Pessoa[] | Pessoa> {
+    const validate = new ValidatePessoaService();
+
+    validate.validate({ codigoPessoa, login, status });
+
     if (codigoPessoa && !login && !status) {
       const pessoa = await this.pessoaRepository.findWithAddress(codigoPessoa);
 
@@ -29,7 +34,6 @@ export default class ListPessoaService {
         return [];
       }
     } else {
-      // Montar a consulta base
       const queryBuilder = this.pessoaRepository
         .createQueryBuilder('pessoa')
         .leftJoinAndSelect('pessoa.enderecos', 'endereco')
@@ -37,7 +41,6 @@ export default class ListPessoaService {
         .leftJoin('bairro.municipio', 'municipio')
         .leftJoin('municipio.uf', 'uf');
 
-      // Adicionar cláusulas de filtro ao Query Builder
       if (codigoPessoa) {
         queryBuilder.andWhere('pessoa.codigoPessoa = :codigoPessoa', {
           codigoPessoa,
@@ -51,14 +54,16 @@ export default class ListPessoaService {
         queryBuilder.andWhere('pessoa.status = :status', { status });
       }
 
-      // Executar a consulta
       const pessoas = await queryBuilder.getMany();
 
-      // Remover os detalhamentos dos endereços
       const pessoasComEnderecosVazios = pessoas.map(pessoa => {
         const pessoaComEnderecoVazio = { ...pessoa, enderecos: [] };
         return pessoaComEnderecoVazio;
       });
+
+      if (codigoPessoa && pessoasComEnderecosVazios.length === 1) {
+        return pessoasComEnderecosVazios[0];
+      }
 
       return pessoasComEnderecosVazios;
     }

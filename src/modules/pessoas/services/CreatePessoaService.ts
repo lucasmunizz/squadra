@@ -1,7 +1,6 @@
 import { IPessoaRepository } from '../domain/repositories/IPessoaRepository';
 import { inject, injectable } from 'tsyringe';
 import Pessoa from '../infra/typeorm/entities/Pessoa';
-import { ICreatePessoa } from '../domain/models/ICreatePessoa';
 import ValidatePessoaService from './ValidatePessoaService';
 import AppError from '../../../shared/errors/AppError';
 import { IEnderecoRepository } from '../../enderecos/domain/repositories/IEnderecoRepository';
@@ -9,6 +8,7 @@ import { hash } from 'bcryptjs';
 import Endereco from 'src/modules/enderecos/infra/typeorm/entities/Endereco';
 import CreateEnderecoService from '../../enderecos/services/CreateEnderecoService';
 import { container } from 'tsyringe';
+import ValidateEnderecoService from '../../enderecos/services/ValidateEnderecoService';
 
 interface IRequest {
   nome: string;
@@ -38,6 +38,10 @@ export default class CreatePessoaService {
     status,
     enderecos,
   }: IRequest): Promise<Pessoa[]> {
+    const validateEnderecoService = container.resolve(ValidateEnderecoService);
+
+    await validateEnderecoService.validateInput(enderecos);
+
     const validator = new ValidatePessoaService();
 
     validator.validate({
@@ -66,8 +70,6 @@ export default class CreatePessoaService {
       status,
     });
 
-    console.log(pessoa.nome);
-
     const createEnderecoService = container.resolve(CreateEnderecoService);
 
     const enderecosPessoa = await createEnderecoService.execute({
@@ -95,8 +97,6 @@ export default class CreatePessoaService {
         enderecos: [],
       };
     });
-
-    console.log(pessoa);
 
     return pessoasSemEnderecos;
   }

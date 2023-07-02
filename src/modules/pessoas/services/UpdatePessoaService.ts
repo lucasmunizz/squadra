@@ -9,6 +9,7 @@ import { hash } from 'bcryptjs';
 import Endereco from 'src/modules/enderecos/infra/typeorm/entities/Endereco';
 import UpdateEnderecoService from '../../enderecos/services/UpdateEnderecoService.ts';
 import { container } from 'tsyringe';
+import ValidateEnderecoService from '../../enderecos/services/ValidateEnderecoService';
 
 interface IRequest {
   codigoPessoa: number;
@@ -40,7 +41,19 @@ export default class UpdatePessoaService {
     status,
     enderecos,
   }: IRequest): Promise<Pessoa[]> {
+    const validateEnderecoService = container.resolve(ValidateEnderecoService);
+
+    await validateEnderecoService.validateInput(enderecos);
+
     const validator = new ValidatePessoaService();
+
+    if (!codigoPessoa) {
+      throw new AppError('O campo codigoPessoa é obrigatório');
+    }
+
+    if (typeof codigoPessoa !== 'number') {
+      throw new AppError('O campo codigoPessoa deve ser um número');
+    }
 
     validator.validate({
       nome,
@@ -103,8 +116,6 @@ export default class UpdatePessoaService {
         enderecos: [],
       };
     });
-
-    console.log(pessoa);
 
     return pessoasSemEnderecos;
   }
