@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import CreateUFService from '../../../services/CreateUFService';
 import { container } from 'tsyringe';
 import ListUFService from '../../../services/ListUFService';
-import ShowUFService from '../../../services/ShowUFService';
 import UpdateUFService from '../../../services/UpdateUFService';
 import DeleteUFService from '../../../services/DeleteUFService';
 
@@ -20,18 +19,6 @@ export default class UFController {
     const ufs = await listUFService.execute({ codigoUF, sigla, nome, status });
 
     return response.json(ufs);
-  }
-
-  public async show(request: Request, response: Response): Promise<Response> {
-    const codigoUF = Number(request.params.codigoUF);
-
-    const status = Number(request.query.status);
-
-    const showUFService = container.resolve(ShowUFService);
-
-    const customers = await showUFService.execute(codigoUF, status);
-
-    return response.json(customers);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

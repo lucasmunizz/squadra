@@ -3,7 +3,7 @@ import AppError from '../../../shared/errors/AppError';
 import { ICreateUF } from '../domain/models/ICreateUF';
 import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
-import ValidateUFService from './ValidateUFService';
+import ValidateUFService from './ValidateCreateUFService';
 import UF from '../infra/typeorm/entities/UF';
 
 @injectable()

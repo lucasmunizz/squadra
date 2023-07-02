@@ -3,7 +3,7 @@ import { IUFRepository } from '../domain/repositories/IUFRepository';
 import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 import { IUF } from '../domain/models/IUF';
-import ValidateUFService from './ValidateUFService';
+import ValidateUFService from './ValidateCreateUFService';
 
 @injectable()
 export default class UpdateUFService {
