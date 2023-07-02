@@ -24,15 +24,40 @@ export default class ListBairroService {
   }: IRequest): Promise<Bairro | Bairro[]> {
     const queryBuilder = this.bairroRepository.createQueryBuilder('bairro');
 
+    // if (!codigoBairro && !codigoMunicipio && !nome && !status) {
+    //   const municipios = await this.bairroRepository.find();
+    //   return municipios;
+    // }
+
+    // if (codigoBairro) {
+    //   queryBuilder.where('bairro.codigoBairro = :codigoBairro', {
+    //     codigoBairro,
+    //   });
+    // }
+
+    // if (status) {
+    //   queryBuilder.where('bairro.status = :status', { status });
+    // }
+    // if (nome) {
+    //   queryBuilder.andWhere('bairro.nome LIKE :nome', { nome: `%${nome}%` });
+    // }
+    // if (codigoMunicipio) {
+    //   queryBuilder.andWhere('bairro.codigoMunicipio = :codigoMunicipio', {
+    //     codigoMunicipio,
+    //   });
+    // }
+
+    // const bairros = await queryBuilder.getMany();
+
+    // if (codigoBairro && bairros.length === 1) {
+    //   return bairros[0];
+    // }
+
+    // return bairros;
+
     if (!codigoBairro && !codigoMunicipio && !nome && !status) {
       const municipios = await this.bairroRepository.find();
       return municipios;
-    }
-
-    if (codigoBairro) {
-      queryBuilder.where('bairro.codigoBairro = :codigoBairro', {
-        codigoBairro,
-      });
     }
 
     if (status) {
@@ -41,24 +66,23 @@ export default class ListBairroService {
     if (nome) {
       queryBuilder.andWhere('bairro.nome LIKE :nome', { nome: `%${nome}%` });
     }
-    if (codigoMunicipio) {
-      queryBuilder.andWhere('bairro.codigoMunicipio = :codigoMunicipio', {
-        codigoMunicipio,
+    if (codigoBairro) {
+      queryBuilder.andWhere('bairro.codigoBairro = :codigoBairro', {
+        codigoBairro,
       });
+
+      if (codigoMunicipio) {
+        queryBuilder.where('bairro.codigoMunicipio = :codigoMunicipio', {
+          codigoMunicipio,
+        });
+      }
+    }
+    const municipios = await queryBuilder.getMany();
+
+    if (codigoBairro && municipios.length === 1) {
+      return municipios[0];
     }
 
-    const bairros = await queryBuilder.getMany();
-
-    if (
-      codigoBairro &&
-      !codigoMunicipio &&
-      !nome &&
-      !status &&
-      bairros.length > 0
-    ) {
-      return bairros[0];
-    } else {
-      return bairros;
-    }
+    return municipios;
   }
 }

@@ -30,10 +30,6 @@ export default class ListMunicipioService {
       return municipios;
     }
 
-    if (codigoUF) {
-      queryBuilder.where('municipio.codigoUF = :codigoUF', { codigoUF });
-    }
-
     if (status) {
       queryBuilder.where('municipio.status = :status', { status });
     }
@@ -44,7 +40,12 @@ export default class ListMunicipioService {
       queryBuilder.andWhere('municipio.codigoMunicipio = :codigoMunicipio', {
         codigoMunicipio,
       });
+
+      if (codigoUF) {
+        queryBuilder.where('municipio.codigoUF = :codigoUF', { codigoUF });
+      }
     }
+
     const municipios = await queryBuilder.getMany();
 
     if (codigoMunicipio && municipios.length === 1) {

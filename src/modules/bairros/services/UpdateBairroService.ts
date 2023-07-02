@@ -1,7 +1,7 @@
 import { IBairroRepository } from '../domain/repositories/IBairroRepository';
 import { inject, injectable } from 'tsyringe';
 import Bairro from '../infra/typeorm/entities/Bairro';
-import ValidateBairroService from './ValidateBairroService';
+import ValidateBairroService from './ValidateUpdateBairroService';
 import AppError from '../../../shared/errors/AppError';
 import { IMunicipioRepository } from '../../municipios/domain/repositories/IMunicipioRepository';
 
@@ -27,17 +27,9 @@ export default class UpdateBairroService {
     nome,
     status,
   }: IRequest): Promise<Bairro[]> {
-    if (!codigoBairro) {
-      throw new AppError('O campo codigoBairro é obrigatório');
-    }
-
-    if (typeof codigoBairro !== 'number') {
-      throw new AppError('O campo codigoBairro deve ser number');
-    }
-
     const validator = new ValidateBairroService();
 
-    validator.validate({ codigoMunicipio, nome, status });
+    validator.validate({ codigoBairro, codigoMunicipio, nome, status });
 
     const bairro = await this.bairroRepository.findByCode(codigoBairro);
 
@@ -53,12 +45,15 @@ export default class UpdateBairroService {
       throw new AppError('Esse municipio não está cadastrado.');
     }
 
-    const nomeMunicipioExists = await this.bairroRepository.findBairroMunicipio(
+    const nomeBairroExists = await this.bairroRepository.findBairroMunicipio(
       nome,
       municipioExists,
     );
 
-    if (nomeMunicipioExists) {
+    if (
+      nomeBairroExists &&
+      bairro.codigoBairro !== nomeBairroExists.codigoBairro
+    ) {
       throw new AppError('Município já possui um bairro com esse nome');
     }
 

@@ -2,7 +2,7 @@ import { IBairroRepository } from '../domain/repositories/IBairroRepository';
 import { inject, injectable } from 'tsyringe';
 import Bairro from '../infra/typeorm/entities/Bairro';
 import { ICreateBairro } from '../domain/models/ICreateBairro';
-import ValidateBairroService from './ValidateBairroService';
+import ValidateBairroService from './ValidateCreateBairroService';
 import AppError from '../../../shared/errors/AppError';
 import { IMunicipioRepository } from '../../municipios/domain/repositories/IMunicipioRepository';
 

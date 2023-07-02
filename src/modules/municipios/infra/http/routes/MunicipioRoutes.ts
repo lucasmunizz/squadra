@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import { Segments, Joi, celebrate } from 'celebrate';
 import MunicipioController from '../controllers/MunicipioController';
-import Municipio from '../../typeorm/entities/Municipio';
 import isAuthenticated from '../../../../../shared/http/middlewares/isAuthenticated';
 
 const municipioRouter = Router();
@@ -15,16 +13,6 @@ municipioRouter.put('/', municipioController.update);
 
 municipioRouter.delete('/:codigoMunicipio', municipioController.delete);
 
-municipioRouter.post(
-  '/',
-  celebrate({
-    [Segments.BODY]: {
-      codigoUF: Joi.number().required(),
-      nome: Joi.string().required(),
-      status: Joi.number().required(),
-    },
-  }),
-  municipioController.create,
-);
+municipioRouter.post('/', municipioController.create);
 
 export default municipioRouter;

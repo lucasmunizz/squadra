@@ -26,5 +26,9 @@ export default class ValidateBairroService {
     if (typeof status !== 'number') {
       throw new AppError('O campo status deve ser um número');
     }
+
+    if (status !== 1 && status !== 2) {
+      throw new AppError('O campo status deve ser 1 ou 2');
+    }
   }
 }
