@@ -15,10 +15,6 @@ export default class ValidateCreateUFService {
       throw new AppError('O campo status é obrigatório');
     }
 
-    if (status !== 1 && status !== 2) {
-      throw new AppError('O campo status deve ser 1 ou 2');
-    }
-
     if (typeof sigla !== 'string') {
       throw new AppError('O campo sigla deve ser um texto');
     }
@@ -29,6 +25,10 @@ export default class ValidateCreateUFService {
 
     if (typeof status !== 'number') {
       throw new AppError('O campo status deve ser um número');
+    }
+
+    if (status !== 1 && status !== 2) {
+      throw new AppError('O campo status deve ser 1 ou 2');
     }
 
     if (sigla.length !== 2) {

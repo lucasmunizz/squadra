@@ -45,19 +45,12 @@ export default class ListMunicipioService {
         codigoMunicipio,
       });
     }
-
     const municipios = await queryBuilder.getMany();
 
-    if (
-      codigoMunicipio &&
-      !codigoUF &&
-      !nome &&
-      !status &&
-      municipios.length > 0
-    ) {
+    if (codigoMunicipio && municipios.length === 1) {
       return municipios[0];
-    } else {
-      return municipios;
     }
+
+    return municipios;
   }
 }
