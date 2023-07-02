@@ -4,7 +4,7 @@ import { ICreateMunicipio } from '../domain/models/ICreateMunicipio';
 import { IUFRepository } from '../../ufs/domain/repositories/IUFRepository';
 import { IMunicipioRepository } from '../domain/repositories/IMunicipioRepository';
 import { inject, injectable } from 'tsyringe';
-import ValidateUFService from './ValidateUFService';
+import ValidateMunicipioService from './ValidateCreateMunicipioService';
 import Municipio from '../infra/typeorm/entities/Municipio';
 
 @injectable()
@@ -21,7 +21,7 @@ export default class CreateMunicipioService {
     nome,
     status,
   }: ICreateMunicipio): Promise<Municipio[]> {
-    const validator = new ValidateUFService();
+    const validator = new ValidateMunicipioService();
 
     validator.validate({ codigoUF, nome, status });
 

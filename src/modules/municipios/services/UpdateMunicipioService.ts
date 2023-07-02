@@ -3,15 +3,9 @@ import AppError from '../../../shared/errors/AppError';
 import { IUFRepository } from '../../ufs/domain/repositories/IUFRepository';
 import { IMunicipioRepository } from '../domain/repositories/IMunicipioRepository';
 import { inject, injectable } from 'tsyringe';
-import ValidateUFService from './ValidateUFService';
+import ValidateUFService from './ValidateUpdateMunicipioService.';
 import Municipio from '../infra/typeorm/entities/Municipio';
-
-interface IRequest {
-  codigoMunicipio: number;
-  codigoUF: number;
-  nome: string;
-  status: number;
-}
+import { IUpdateMunicipio } from '../domain/models/IUpdateMunicipio';
 
 @injectable()
 export default class UpdateMunicipioService {
@@ -27,18 +21,10 @@ export default class UpdateMunicipioService {
     codigoUF,
     nome,
     status,
-  }: IRequest): Promise<Municipio[]> {
-    if (!codigoMunicipio) {
-      throw new AppError('O campo codigoMunicipio é obrigatório');
-    }
-
-    if (typeof codigoMunicipio !== 'number') {
-      throw new AppError('O campo codigoMunicipio deve ser um número');
-    }
-
+  }: IUpdateMunicipio): Promise<Municipio[]> {
     const validator = new ValidateUFService();
 
-    validator.validate({ codigoUF, nome, status });
+    validator.validate({ codigoMunicipio, codigoUF, nome, status });
 
     const municipio = await this.municipioRepository.findByCode(
       codigoMunicipio,
@@ -54,16 +40,15 @@ export default class UpdateMunicipioService {
       throw new AppError('Essa UF não está cadastrada.');
     }
 
-    if (ufExists.status === 2) {
-      throw new AppError('Essa UF está como status 2 (inválida)');
-    }
-
     const nomeMunicipioExists = await this.municipioRepository.findMunicipioUF(
       nome,
       ufExists,
     );
 
-    if (nomeMunicipioExists) {
+    if (
+      nomeMunicipioExists &&
+      municipio.codigoMunicipio !== nomeMunicipioExists.codigoMunicipio
+    ) {
       throw new AppError('UF já possui um município com esse nome');
     }
 
