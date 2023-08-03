@@ -24,65 +24,43 @@ export default class ListBairroService {
   }: IRequest): Promise<Bairro | Bairro[]> {
     const queryBuilder = this.bairroRepository.createQueryBuilder('bairro');
 
-    // if (!codigoBairro && !codigoMunicipio && !nome && !status) {
-    //   const municipios = await this.bairroRepository.find();
-    //   return municipios;
-    // }
-
-    // if (codigoBairro) {
-    //   queryBuilder.where('bairro.codigoBairro = :codigoBairro', {
-    //     codigoBairro,
-    //   });
-    // }
-
-    // if (status) {
-    //   queryBuilder.where('bairro.status = :status', { status });
-    // }
-    // if (nome) {
-    //   queryBuilder.andWhere('bairro.nome LIKE :nome', { nome: `%${nome}%` });
-    // }
-    // if (codigoMunicipio) {
-    //   queryBuilder.andWhere('bairro.codigoMunicipio = :codigoMunicipio', {
-    //     codigoMunicipio,
-    //   });
-    // }
-
-    // const bairros = await queryBuilder.getMany();
-
-    // if (codigoBairro && bairros.length === 1) {
-    //   return bairros[0];
-    // }
-
-    // return bairros;
-
-    if (!codigoBairro && !codigoMunicipio && !nome && !status) {
-      const municipios = await this.bairroRepository.find();
-      return municipios;
+    if (!codigoMunicipio && !codigoBairro && !nome && !status) {
+      const bairros = await this.bairroRepository.find();
+      return bairros;
     }
 
-    if (status) {
-      queryBuilder.where('bairro.status = :status', { status });
+    if (codigoMunicipio) {
+      queryBuilder.where('bairro.codigoMunicipio = :codigoMunicipio', {
+        codigoMunicipio,
+      });
     }
+
     if (nome) {
       queryBuilder.andWhere('bairro.nome LIKE :nome', { nome: `%${nome}%` });
     }
+
     if (codigoBairro) {
       queryBuilder.andWhere('bairro.codigoBairro = :codigoBairro', {
         codigoBairro,
       });
 
       if (codigoMunicipio) {
-        queryBuilder.where('bairro.codigoMunicipio = :codigoMunicipio', {
+        queryBuilder.andWhere('bairro.codigoMunicipio = :codigoMunicipio', {
           codigoMunicipio,
         });
       }
     }
-    const municipios = await queryBuilder.getMany();
 
-    if (codigoBairro && municipios.length === 1) {
-      return municipios[0];
+    if (status) {
+      queryBuilder.andWhere('bairro.status = :status', { status });
     }
 
-    return municipios;
+    const bairros = await queryBuilder.getMany();
+
+    if (codigoBairro && bairros.length === 1) {
+      return bairros[0];
+    }
+
+    return bairros;
   }
 }
