@@ -19,4 +19,12 @@ export interface IPessoaRepository {
     queryRunner?: QueryRunner,
   ): SelectQueryBuilder<Pessoa>;
   findWithAddress(codigoPessoa: number): Promise<Pessoa | undefined>;
+  findWithAddressAndLogin(
+    codigoPessoa: number,
+    login: string,
+  ): Promise<Pessoa | undefined>;
+  findWithAddressAndStatus(
+    codigoPessoa: number,
+    status: number,
+  ): Promise<Pessoa | undefined>;
 }

@@ -114,6 +114,46 @@ class PessoaRepository implements IPessoaRepository {
     return pessoa;
   }
 
+  public async findWithAddressAndStatus(
+    codigoPessoa: number,
+    status: number,
+  ): Promise<Pessoa | undefined> {
+    const pessoa = this.ormRepository.findOne({
+      where: {
+        codigoPessoa,
+        status,
+      },
+      relations: [
+        'enderecos',
+        'enderecos.bairro',
+        'enderecos.bairro.municipio',
+        'enderecos.bairro.municipio.uf',
+      ],
+    });
+
+    return pessoa;
+  }
+
+  public async findWithAddressAndLogin(
+    codigoPessoa: number,
+    login: string,
+  ): Promise<Pessoa | undefined> {
+    const pessoa = this.ormRepository.findOne({
+      where: {
+        codigoPessoa,
+        login,
+      },
+      relations: [
+        'enderecos',
+        'enderecos.bairro',
+        'enderecos.bairro.municipio',
+        'enderecos.bairro.municipio.uf',
+      ],
+    });
+
+    return pessoa;
+  }
+
   public async remove(pessoa: Pessoa): Promise<void> {
     await this.ormRepository.remove(pessoa);
   }

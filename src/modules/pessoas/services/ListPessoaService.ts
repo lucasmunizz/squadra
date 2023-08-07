@@ -33,6 +33,28 @@ export default class ListPessoaService {
       } else {
         return [];
       }
+    } else if (codigoPessoa && login && !status) {
+      const pessoa = await this.pessoaRepository.findWithAddressAndLogin(
+        codigoPessoa,
+        login,
+      );
+
+      if (pessoa) {
+        return pessoa;
+      } else {
+        return [];
+      }
+    } else if (codigoPessoa && !login && status) {
+      const pessoa = await this.pessoaRepository.findWithAddressAndStatus(
+        codigoPessoa,
+        status,
+      );
+
+      if (pessoa) {
+        return pessoa;
+      } else {
+        return [];
+      }
     } else {
       const queryBuilder = this.pessoaRepository
         .createQueryBuilder('pessoa')
@@ -40,12 +62,6 @@ export default class ListPessoaService {
         .leftJoin('endereco.bairro', 'bairro')
         .leftJoin('bairro.municipio', 'municipio')
         .leftJoin('municipio.uf', 'uf');
-
-      if (codigoPessoa) {
-        queryBuilder.andWhere('pessoa.codigoPessoa = :codigoPessoa', {
-          codigoPessoa,
-        });
-      }
 
       if (login) {
         queryBuilder.andWhere('pessoa.login = :login', { login });
